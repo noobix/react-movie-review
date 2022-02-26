@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import '../App.css'
-import { Container, Button, Form } from "react-bootstrap";
+import { Container, Button, Form, Image} from "react-bootstrap";
 import Picture from "../image/images.png"
 
 class ReviewFeed extends React.Component {
@@ -9,7 +9,32 @@ class ReviewFeed extends React.Component {
         super();
         this.state = {ratings: [], query:""}
     }
-    
+    movieliststart = async () => { 
+        try{
+            let now =new Date()
+            let today = `${now.getFullYear()}-0${now.getMonth()}-0${now.getDay()}`
+            let oneYearAgo = new Date("2021-02-01")
+            let year= oneYearAgo.getFullYear().toString();
+            let month = oneYearAgo.getMonth().toString();
+            let day = oneYearAgo.getDay().toString();
+            let result =`${year}-0${month}-0${day}`
+            const response = await axios.get(`https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=big&opening-date=${result}:${today}`,{
+                params: {
+                    "api-key": "D8BNLsbSXJiHHRvhzASAs6t1EmduTK8T",
+                    // query: `big&opening-date${oneYearAgo}-${now}`
+                }
+            })
+            // this.setState({query: response.params.query})
+            this.setState({ratings: response.data.results})
+            // console.log(response.data.results)
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+    async componentDidMount() {
+        this.movieliststart()
+    }
     getReviews = async () => {
         try{
             const response = await axios.get("https://api.nytimes.com/svc/movies/v2/reviews/search.json",{
@@ -18,7 +43,6 @@ class ReviewFeed extends React.Component {
                     query: this.state.query
                 }
             })
-
             if (response.data.results) {
                 this.setState({ratings: response.data.results})
                 console.log(response.data.results)
@@ -28,7 +52,6 @@ class ReviewFeed extends React.Component {
             console.log (e)
         }
     }
-
     handleMovieSearch = (e) =>{
         this.setState({query: e.target.value})
     }
@@ -51,9 +74,9 @@ class ReviewFeed extends React.Component {
                     <section className="dark">
                         <Container className="container py-4">
                             <h1 className="h1 text-center" id="pageHeaderTitle">Author: {rating.byline}</h1>
-                                <article className="postcard dark red">
+                            <article className="postcard dark red">
                                 <a className="postcard__img_link" href="#">
-                                    <img className="postcard__img" src={rating.multimedia ? rating.multimedia.src : Picture} alt="Image Title" />	
+                                    <Image className="postcard__img" src={rating.multimedia ? rating.multimedia.src : Picture} alt="Image Title" />	
                                 </a>
                                 <div className="postcard__text">
                                     <h1 className="postcard__title red"><a href="#">{rating.display_title}</a></h1>
@@ -69,7 +92,7 @@ class ReviewFeed extends React.Component {
                             </article>
                         </Container>
                     </section>
-                    </div>)
+                </div>)
             })}
         </div>)
     }
