@@ -11,6 +11,9 @@ class ReviewFeed extends React.Component {
     }
     movieliststart = async () => { 
         try{
+            // var now = new Date();
+            // var nextWeek = new Date(new Date(now).setDate(now.getDate() + 7));
+            // var nextMonth = new Date(new Date(now).setMonth(now.getMonth() + 1));
             let now =new Date()
             let today = `${now.getFullYear()}-0${now.getMonth()}-0${now.getDay()}`
             let oneYearAgo = new Date("2021-02-01")
