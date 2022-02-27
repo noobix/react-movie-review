@@ -76,7 +76,9 @@ class ReviewFeed extends React.Component {
                             <h1 className="h1 text-center" id="pageHeaderTitle">Author: {rating.byline}</h1>
                             <article className="postcard dark red">
                                 <a className="postcard__img_link" href="#">
-                                    <Image className="postcard__img" src={rating.multimedia ? rating.multimedia.src : Picture} alt="Image Title" />	
+                                    <Image className="postcard__img" src=
+                                    {rating.multimedia ? rating.multimedia.src : Picture} 
+                                    alt="Image Title" height={'200px'} width={'300px'}/>	
                                 </a>
                                 <div className="postcard__text">
                                     <h1 className="postcard__title red"><a href="#">{rating.display_title}</a></h1>
